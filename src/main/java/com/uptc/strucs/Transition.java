@@ -13,7 +13,7 @@ public class Transition implements  Comparable<Transition> {
     // valid that not is NFA
     @Override
     public int compareTo(Transition t2) {
-        return t2.terminalSymbol.compareTo(this.terminalSymbol) + this.state.name.compareTo(t2.state.name);
+        return t2.terminalSymbol.compareTo(this.terminalSymbol);
     }
 
 }
