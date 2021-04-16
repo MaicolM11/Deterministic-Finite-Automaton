@@ -1,0 +1,4 @@
+
+- arrastrar movenr los estados
+- click evaluar (insertar , eliminar estadps transiciones)
+- 

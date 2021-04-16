@@ -21,4 +21,8 @@ public class State {
         return this.transitions.add(new Transition(conn, terminalSymbol));
     }
 
+    @Override
+    public String toString() {
+        return name;
+    }
 }
