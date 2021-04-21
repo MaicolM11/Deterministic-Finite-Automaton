@@ -1,40 +1,40 @@
 package com.uptc.strucs;
 
 import java.awt.Point;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public class Automaton {
 
-    private final Set<State> graph;
-    private final Map<String, Integer> symbols;
+    protected final Set<State> graph;
 
     public Automaton() {
         this.graph = new HashSet<>();
-        this.symbols = new HashMap<>();
     }
 
     public boolean addTransition(State a, State b, String symbol) {
-        int count = this.symbols.getOrDefault(symbol, 0) + 1;
-        this.symbols.put(symbol, count);
         return a.addTransition(b, symbol);
     }
 
     public boolean deleteTransition(State a, State b) {
-        /*
-         * int count = this.symbols.getOrDefault(symbol, 0) - 1;
-         * this.symbols.put(symbol, count);
-         */
-        return true;
+        return a.deleteConnection(b);
+    }
+
+    public void deleteState(State state) {
+        this.graph.removeIf(x -> x.equals(state));
+        this.graph.forEach(x -> x.deleteConnection(state));
     }
 
     public boolean addState(String name, Point point) {
         return graph.add(new State(name, point));
+    }
+
+    public boolean addState(State state) {
+        return graph.add(state);
     }
 
     public Set<State> getGraph() {
@@ -53,7 +53,13 @@ public class Automaton {
     }
 
     public List<String> getWeights() {
-        return symbols.entrySet().stream().filter(e -> e.getValue() > 0).map(x -> x.getKey())
-                .collect(Collectors.toList());
+        List<Transition> result = new ArrayList<>();  // save all transitions
+        graph.stream().map(x-> x.transitions).forEach(result::addAll);
+        return result.stream().map(x-> x.terminalSymbol).distinct().collect(Collectors.toList());
     }
+
+    public Set<Transition> getStatesTransitionsOut(State state){
+        return graph.stream().filter(x-> x.equals(state)).map(x-> x.transitions).collect(Collectors.toList()).get(0);
+    }
+
 }

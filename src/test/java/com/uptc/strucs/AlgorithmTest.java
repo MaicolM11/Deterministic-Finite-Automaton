@@ -40,7 +40,19 @@ public class AlgorithmTest {
         algorithm.addTransition(g, g, "0");
         algorithm.addTransition(g, g, "1");
         
+        algorithm.getGraph().forEach(x -> {
+            System.out.println(x.name);
+            x.transitions.forEach(y -> System.out.println(y.state.name + "->" + y.terminalSymbol));
+            System.out.println();
+        });
+
         algorithm.init();
+        System.out.println("--------------------------");
+        algorithm.getGraph().forEach(x -> {
+            System.out.println(x.name);
+            x.transitions.forEach(y -> System.out.println(y.state.name + "->" + y.terminalSymbol));
+            System.out.println();
+        });
     }
     
 }

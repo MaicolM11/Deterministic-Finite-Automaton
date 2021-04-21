@@ -1,4 +1,76 @@
 
+dfa
+
+
+vista
+
+- 
 - arrastrar movenr los estados
 - click evaluar (insertar , eliminar estadps transiciones)
 - 
+
+- opcion 
+
+Point x,y
+
+States
+click -> newState
+x,y name
+strucs -> new State
+controller frame repaint
+
+Frame principal // yenny actionLister controller
+
+-panel opciones
+addState addTransition
+getactive(newSt)
+
+-panel interaccion // Santiago
+muestra grafo (click, presionado)
+getPoint() // agregar estados
+
+g = new grafo
+vista(g)
+
+nuevo objeto
+
+vista.repaint()
+
+vista
+g.for
+
+opciones.
+pintar-mover los estados.
+
+transiciones.
+
+A
+ B 0
+ C 1
+
+A BC
+0
+00
+000
+000x
+00000
+
+pinte los estados -> repaint()
+teniendo cuenta x,y
+
+1, suban errores
+2. Lo suban el mismo dia 
+
+
+
+
+
+
+panel = PanelInteraccion(graph)
+
+panel.show()
+
+graph.add('A', new Point(10,10));
+
+panel.repant()
+
