@@ -7,7 +7,7 @@ import java.util.TreeSet;
 
 import com.uptc.models.Coordenate;
 
-public class State extends Coordenate {
+public class State{
 
     protected String name;
     protected Set<Transition> transitions;
@@ -19,7 +19,7 @@ public class State extends Coordenate {
     protected State newState;
 
     public State (String name, Point point) {
-        super(point.x, point.y);
+        //super(point.x, point.y);
         this.name = name;
         this.transitions = new TreeSet<>();
         isCombinated = false;

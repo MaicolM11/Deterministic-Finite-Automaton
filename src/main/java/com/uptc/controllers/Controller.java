@@ -1,6 +1,6 @@
 package com.uptc.controllers;
 
-public class Controller {
+public class Controller{
     
 
 
