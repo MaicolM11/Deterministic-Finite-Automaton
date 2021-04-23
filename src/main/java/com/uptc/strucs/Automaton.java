@@ -61,5 +61,7 @@ public class Automaton {
     public Set<Transition> getStatesTransitionsOut(State state){
         return graph.stream().filter(x-> x.equals(state)).map(x-> x.transitions).collect(Collectors.toList()).get(0);
     }
-
+    
+    
+    
 }

@@ -1,11 +1,8 @@
 package com.uptc.strucs;
 
 import java.awt.Point;
-
 import java.util.Set;
 import java.util.TreeSet;
-
-import com.uptc.models.Coordenate;
 
 public class State{
 
@@ -13,6 +10,7 @@ public class State{
     protected Set<Transition> transitions;
     protected boolean isInitial;
     protected boolean isFinal;
+    private Point point;
     
     //algortihm
     protected boolean isCombinated;
@@ -23,6 +21,7 @@ public class State{
         this.name = name;
         this.transitions = new TreeSet<>();
         isCombinated = false;
+        this.point = point;
     }
 
     public boolean addTransition(State conn, String terminalSymbol) {
@@ -67,4 +66,90 @@ public class State{
         return transitions.stream().filter(x-> x.state.equals(state)).findFirst().isPresent();
     }
 
+	/**
+	 * @return the point
+	 */
+	public Point getPoint() {
+		return point;
+	}
+
+	/**
+	 * @param point the point to set
+	 */
+	public void setPoint(Point point) {
+		this.point = point;
+	}
+
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * @param name the name to set
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	/**
+	 * @return the transitions
+	 */
+	public Set<Transition> getTransitions() {
+		return transitions;
+	}
+
+	/**
+	 * @param transitions the transitions to set
+	 */
+	public void setTransitions(Set<Transition> transitions) {
+		this.transitions = transitions;
+	}
+
+	/**
+	 * @return the isInitial
+	 */
+	public boolean isInitial() {
+		return isInitial;
+	}
+
+	/**
+	 * @param isInitial the isInitial to set
+	 */
+	public void setInitial(boolean isInitial) {
+		this.isInitial = isInitial;
+	}
+
+	/**
+	 * @return the isFinal
+	 */
+	public boolean isFinal() {
+		return isFinal;
+	}
+
+	/**
+	 * @param isFinal the isFinal to set
+	 */
+	public void setFinal(boolean isFinal) {
+		this.isFinal = isFinal;
+	}
+
+	/**
+	 * @return the newState
+	 */
+	public State getNewState() {
+		return newState;
+	}
+
+	/**
+	 * @param newState the newState to set
+	 */
+	public void setNewState(State newState) {
+		this.newState = newState;
+	}
+	
+	
+	
 }

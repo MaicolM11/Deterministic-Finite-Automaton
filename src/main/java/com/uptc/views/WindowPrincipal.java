@@ -1,10 +1,11 @@
 package com.uptc.views;
-import javax.swing.BoxLayout;
 import javax.swing.JFrame;
+
 
 public class WindowPrincipal extends JFrame{
 
-    private PanelMenu panelMenu;
+	private static final long serialVersionUID = 1L;
+	private PanelMenu panelMenu;
     private PanelInteractive panelInteractive;
 
     public WindowPrincipal(){
@@ -16,10 +17,21 @@ public class WindowPrincipal extends JFrame{
         this.pack();
         this.setSize(700,600);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setLocationRelativeTo(null);
-        this.setVisible(true);    
+        this.setLocationRelativeTo(null);    
     }
 
+	/**
+	 * @return the panelMenu
+	 */
+	public PanelMenu getPanelMenu() {
+		return panelMenu;
+	}
 
+	/**
+	 * @return the panelInteractive
+	 */
+	public PanelInteractive getPanelInteractive() {
+		return panelInteractive;
+	}
     
 }
