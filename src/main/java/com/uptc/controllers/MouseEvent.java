@@ -2,14 +2,18 @@ package com.uptc.controllers;
 
 import java.awt.event.MouseListener;
 
+import com.uptc.views.Options;
 import com.uptc.strucs.State;
 import com.uptc.views.PanelInteractive;
+import com.uptc.views.PanelMenu;
+
 import java.awt.event.MouseMotionListener;
 
 public class MouseEvent implements MouseMotionListener, MouseListener {
 	
 	private static MouseEvent MY_INSTANCE;
 	private PanelInteractive panelInteractive;
+	private PanelMenu panelMenu;
 	private State circle_move;
 	
 	public static MouseEvent getInstance() {
@@ -29,13 +33,19 @@ public class MouseEvent implements MouseMotionListener, MouseListener {
 	public void setPanelInteractive(PanelInteractive p) {
 		this.panelInteractive = p;
 	}
-
+	
+	public void setPanelMenu(PanelMenu panelMenu) {
+		this.panelMenu = panelMenu;
+	}
+	
 	@Override
 	public void mouseClicked(java.awt.event.MouseEvent e) {
 		int button = e.getButton();
 		if(button == 1) {//Click Izquierdo
-			ManageAutomaton.getInstance().addState(e.getX(), e.getY());
-			this.panelInteractive.repaint();
+			if(this.panelMenu.getLastOption() == Options.NEW_STATE) {//Si se pulso el boton nuevo estado
+				ManageAutomaton.getInstance().addState(e.getX(), e.getY());
+				this.panelInteractive.repaint();
+			}
 		}else if(button == 2) {//Click Derecho
 			
 		}

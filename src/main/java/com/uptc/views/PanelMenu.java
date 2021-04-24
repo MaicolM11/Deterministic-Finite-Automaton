@@ -7,12 +7,15 @@ import javax.swing.JToolBar;
 import javax.swing.plaf.DimensionUIResource;
 import javax.swing.plaf.FontUIResource;
 
+import com.uptc.controllers.MouseEvent;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class PanelMenu extends JPanel implements ActionListener {
 
-    private String buttons[][];
+	private static final long serialVersionUID = 1L;
+	private String buttons[][];
     private JToolBar jToolBar;
     private Options lastOption;
 
@@ -23,6 +26,7 @@ public class PanelMenu extends JPanel implements ActionListener {
         jToolBar.setFloatable(false);
         initButtons();
         this.add(jToolBar);
+        MouseEvent.getInstance().setPanelMenu(this);
         this.setVisible(true);
     }
 
