@@ -1,0 +1,6 @@
+package com.uptc.views;
+
+public enum Options{
+    NEW_STATE,NEW_TRANSITION,DELETE_STATE,DELETE_TRANSITION,MINIMIZATE,VALIDATE_WORD;
+}
+

@@ -7,61 +7,59 @@ import javax.swing.JToolBar;
 import javax.swing.plaf.DimensionUIResource;
 import javax.swing.plaf.FontUIResource;
 
-public class PanelMenu extends JPanel{
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-	private static final long serialVersionUID = 1L;
-	
-	private JButton btnNewState;
-	
-	public PanelMenu(){
-		this.setVisible(true);
-		JToolBar jToolBar=addButtons();
-		this.add(jToolBar);
-    }
-	
-	
-	
-    public JToolBar addButtons(){
-        FontUIResource font=new FontUIResource("Times New Roman", FontUIResource.BOLD, 16);
-        JToolBar jToolBar= new JToolBar();
-        jToolBar.setPreferredSize(new DimensionUIResource(700, 40));
+public class PanelMenu extends JPanel implements ActionListener {
+
+    private String buttons[][];
+    private JToolBar jToolBar;
+    private Options lastOption;
+
+    public PanelMenu() {
+        
+        jToolBar = new JToolBar();
+        jToolBar.setPreferredSize(new DimensionUIResource(800, 40));
         jToolBar.setFloatable(false);
-        JButton btnNewState= new JButton("Estado");
-        btnNewState.setFont(font);
-        btnNewState.setContentAreaFilled(false);
-        btnNewState.setBorderPainted(false);
-        btnNewState.setIcon(new ImageIcon("/src/images/Add.png"));
-        JButton btnNewTransition= new JButton("Transición");
-        btnNewTransition.setFont(font);
-        btnNewTransition.setContentAreaFilled(false);
-        btnNewTransition.setBorderPainted(false);
-        btnNewTransition.setIcon(new ImageIcon("/src/images/Add.png"));
-        JButton btnDelete= new JButton("Eliminar");
-        btnDelete.setFont(font);
-        btnDelete.setContentAreaFilled(false);
-        btnDelete.setBorderPainted(false);
-        btnDelete.setIcon(new ImageIcon("/src/images/Delete.png"));
-        JButton btnMinimization= new JButton("Minimizar");
-        btnMinimization.setFont(font);
-        btnMinimization.setContentAreaFilled(false);
-        btnMinimization.setBorderPainted(false);
-        btnMinimization.setIcon(new ImageIcon("/src/images/Minimizate.png"));
-        JButton btnValidateWord= new JButton("Validar palabras");
-        btnValidateWord.setFont(font);
-        btnValidateWord.setContentAreaFilled(false);
-        btnValidateWord.setBorderPainted(false);
-        btnValidateWord.setIcon(new ImageIcon("/src/images/Validate.png"));
-        jToolBar.add(btnNewState);
-        jToolBar.add(btnNewTransition);
-        jToolBar.add(btnDelete);
-        jToolBar.add(btnMinimization);
-        jToolBar.add(btnValidateWord);
-        return jToolBar;
+        initButtons();
+        this.add(jToolBar);
+        this.setVisible(true);
     }
 
-    public int getOption () {
-    	
-    	return 0;
+    public void initButtons() {
+        this.buttons = new String[][] { 
+                { "Estado", "/Add.png", Options.NEW_STATE.name() },
+                { "Transición", "/Add.png" ,Options.NEW_TRANSITION.name() },
+                { "Eliminar Estado", "/Delete.png", Options.DELETE_STATE.name() },
+                { "Eliminar Transición", "/Delete.png" ,Options.DELETE_TRANSITION.name()},
+                { "Minimizar", "/Minizate.png" ,Options.MINIMIZATE.name()}, 
+                { "Validar Palabras", "/Validate.png",Options.VALIDATE_WORD.name()}
+                };
+                init();
     }
-    
+
+    public void init() {
+        FontUIResource font = new FontUIResource("Times New Roman", FontUIResource.BOLD, 16);
+        for (String[] b : buttons) {
+            JButton button = new JButton(b[0]);
+            button.setFont(font);
+            button.setContentAreaFilled(false);
+            button.setBorderPainted(false);
+            button.addActionListener(this);
+            button.setActionCommand(b[2]);
+           // button.setIcon(new ImageIcon(getClass().getResource("/images" + b[1])));
+            jToolBar.add(button);
+
+        }
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        lastOption=Options.valueOf(e.getActionCommand());
+    }
+
+
+    public Options getLastOption(){
+        return lastOption;
+    }
 }
