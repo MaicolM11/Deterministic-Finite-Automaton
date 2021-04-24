@@ -32,7 +32,7 @@ public class PanelMenu extends JPanel implements ActionListener {
                 { "Transición", "/Add.png" ,Options.NEW_TRANSITION.name() },
                 { "Eliminar Estado", "/Delete.png", Options.DELETE_STATE.name() },
                 { "Eliminar Transición", "/Delete.png" ,Options.DELETE_TRANSITION.name()},
-                { "Minimizar", "/Minizate.png" ,Options.MINIMIZATE.name()}, 
+                { "Minimizar", "/Minimizate.png" ,Options.MINIMIZATE.name()},
                 { "Validar Palabras", "/Validate.png",Options.VALIDATE_WORD.name()}
                 };
                 init();
@@ -47,7 +47,7 @@ public class PanelMenu extends JPanel implements ActionListener {
             button.setBorderPainted(false);
             button.addActionListener(this);
             button.setActionCommand(b[2]);
-           // button.setIcon(new ImageIcon(getClass().getResource("/images" + b[1])));
+            button.setIcon(new ImageIcon(getClass().getResource("/images" + b[1])));
             jToolBar.add(button);
 
         }

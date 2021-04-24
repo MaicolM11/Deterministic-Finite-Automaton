@@ -1,12 +1,16 @@
 package com.uptc.controllers;
 
 import java.awt.event.MouseListener;
-import com.uptc.views.PanelInteractive;
 
-public class MouseEvent implements MouseListener {
+import com.uptc.strucs.State;
+import com.uptc.views.PanelInteractive;
+import java.awt.event.MouseMotionListener;
+
+public class MouseEvent implements MouseMotionListener, MouseListener {
 	
 	private static MouseEvent MY_INSTANCE;
 	private PanelInteractive panelInteractive;
+	private State circle_move;
 	
 	public static MouseEvent getInstance() {
 		if(MY_INSTANCE == null) {
@@ -56,6 +60,26 @@ public class MouseEvent implements MouseListener {
 	@Override
 	public void mouseExited(java.awt.event.MouseEvent e) {
 		
+	}
+
+	/***
+	 * Mover el estado por la pantalla
+	 * @param e
+	 */
+	@Override
+	public void mouseDragged(java.awt.event.MouseEvent e) {
+		if (circle_move == null) {
+            ManageAutomaton.getInstance().searchState(e.getPoint()).ifPresent(x -> circle_move = x);
+        } else {
+            circle_move.translate(e.getPoint().x - circle_move.x, e.getPoint().y - circle_move.y);
+        }
+         this.panelInteractive.repaint();
+	}
+
+	@Override
+	public void mouseMoved(java.awt.event.MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		circle_move = null;
 	}
 
 }

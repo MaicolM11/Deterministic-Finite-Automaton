@@ -52,16 +52,14 @@ public class Automaton {
         return graph.stream().filter(x -> x.name.equals(name)).findFirst();
     }
 
+    public Optional<State> searchState(Point p) {
+        return graph.stream().filter(x -> x.searchCircle(p)).findFirst();
+    }
+
     public List<String> getWeights() {
         List<Transition> result = new ArrayList<>();  // save all transitions
         graph.stream().map(x-> x.transitions).forEach(result::addAll);
         return result.stream().map(x-> x.terminalSymbol).distinct().collect(Collectors.toList());
     }
 
-    public Set<Transition> getStatesTransitionsOut(State state){
-        return graph.stream().filter(x-> x.equals(state)).map(x-> x.transitions).collect(Collectors.toList()).get(0);
-    }
-    
-    
-    
 }

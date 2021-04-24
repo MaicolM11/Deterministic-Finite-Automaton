@@ -15,12 +15,12 @@ public class PanelInteractive extends JPanel{
      this.setVisible(true);
      JLabel jLabel= new JLabel("PANEL INTERACTIVO");
      this.add(jLabel);
-     this.addMouseListener(MouseEvent.getInstance());
+        this.addMouseListener(MouseEvent.getInstance());
+        this.addMouseMotionListener(MouseEvent.getInstance());
     }
 	
 	
 	public void paint(Graphics g){
-		System.out.println("Me llamaron");
 		super.paint(g);
 		ManageAutomaton.getInstance().redibujarEstados(g);
     }

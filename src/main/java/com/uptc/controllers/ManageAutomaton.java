@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.util.Iterator;
+import java.util.Optional;
+
 import com.uptc.strucs.Automaton;
 import com.uptc.strucs.State;
 
@@ -16,7 +18,7 @@ public class ManageAutomaton {
 	
 	private Automaton automaton;
 	private int cont;
-	private static int RADIO = 50;
+	public static int RADIO = 50;
 	private static  Color yellow = new Color(255,255,150);
 	private static ManageAutomaton INSTANCE;
 	
@@ -34,7 +36,7 @@ public class ManageAutomaton {
 	
 	/**
 	 * Dibuja un estado y le asigna un nombre
-	 * @param graphics2d
+	 * @param graphics
 	 * @param posx
 	 * @param posy
 	 */
@@ -80,7 +82,7 @@ public class ManageAutomaton {
 	public void redibujarEstados(Graphics g) {
 		Iterator<State> it = this.automaton.getGraph().iterator();
 		 while(it.hasNext()){
-			 drwaState(g, it.next());
+			 drawState(g, it.next());
 		 }
 	}
 	
@@ -89,13 +91,17 @@ public class ManageAutomaton {
 	 * @param g
 	 * @param state
 	 */
-	public void drwaState(Graphics g , State state) {
+	public void drawState(Graphics g , State state) {
 		g.setColor(yellow);
 		Point po = state.getPoint();
-		g.fillOval(po.x ,po.y ,RADIO , RADIO);
+		g.fillOval(po.x -(RADIO/2),po.y-(RADIO/2) ,RADIO , RADIO);
 		g.setColor(Color.BLACK);
-		g.drawOval(po.x, po.y, RADIO, RADIO);
-		g.drawString(state.getName() , state.getPoint().x + (RADIO /3), state.getPoint().y + (RADIO / 2));
+		g.drawOval(po.x-(RADIO/2), po.y-(RADIO/2), RADIO, RADIO);
+		g.drawString(state.getName() , state.getPoint().x , state.getPoint().y );
+	}
+
+	public Optional<State> searchState(Point point){
+		return this.automaton.searchState(point);
 	}
 	
 }
