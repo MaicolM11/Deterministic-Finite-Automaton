@@ -8,7 +8,8 @@ import com.uptc.models.Coordenate;
 
 public class State extends Coordenate {
 
-    protected String name;
+	private static final long serialVersionUID = 1L;
+	protected String name;
     protected Set<Transition> transitions;
     protected boolean isInitial;
     protected boolean isFinal;
@@ -22,6 +23,8 @@ public class State extends Coordenate {
         this.name = name;
         this.transitions = new TreeSet<>();
         isCombinated = false;
+        this.isFinal = false;
+        this.isInitial = false;
     }
 
     public boolean addTransition(State conn, String terminalSymbol) {

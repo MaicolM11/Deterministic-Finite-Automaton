@@ -3,6 +3,7 @@ package com.uptc.controllers;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.Polygon;
 import java.util.Iterator;
 import java.util.Optional;
 
@@ -21,6 +22,7 @@ public class ManageAutomaton {
 	public static int RADIO = 50;
 	private static  Color yellow = new Color(255,255,150);
 	private static ManageAutomaton INSTANCE;
+	private Optional<State> lastSelected;
 	
 	private ManageAutomaton() {
 		this.automaton = new Automaton();
@@ -97,11 +99,63 @@ public class ManageAutomaton {
 		g.fillOval(po.x -(RADIO/2),po.y-(RADIO/2) ,RADIO , RADIO);
 		g.setColor(Color.BLACK);
 		g.drawOval(po.x-(RADIO/2), po.y-(RADIO/2), RADIO, RADIO);
-		g.drawString(state.getName() , state.getPoint().x , state.getPoint().y );
+		g.drawString(state.getName() , state.getPoint().x , state.getPoint().y);
+		if(state.isInitial()) {
+			this.drawInitialState(g, state.getPoint().x , state.getPoint().y);
+		}
+		if(state.isFinal()) {
+			this.drawFinalState(g, state.getPoint().x , state.getPoint().y);
+		}
 	}
-
+	
+	/**
+	 * 
+	 * @param g
+	 * @param xInitial
+	 * @param yInitial
+	 */
+	private void drawInitialState(Graphics g , int xInitial, int yInitial) {
+		int xPoly[] = {xInitial - RADIO  , xInitial - RADIO / 2 , xInitial - RADIO };
+        int yPoly[] = {yInitial - RADIO / 2, yInitial, yInitial + RADIO / 2};
+        Polygon poly = new Polygon(xPoly, yPoly, xPoly.length);
+        g.drawPolygon(poly);
+	}
+	
+	private void drawFinalState(Graphics g, int xInitial, int yInitial) {
+		g.drawOval(xInitial - (RADIO / 2) + 5, yInitial - (RADIO / 2) + 5, RADIO - (RADIO / 5) , RADIO - (RADIO / 5) );
+	}
+	
 	public Optional<State> searchState(Point point){
-		return this.automaton.searchState(point);
+		this.lastSelected = this.automaton.searchState(point);
+		return this.lastSelected;
+	}
+	
+	/**
+	 * Si es inicial lo desmarca como inicial y viceversa
+	 */
+	public void changeToInitial() {
+		if(this.lastSelected.isPresent()) {
+			State s = this.lastSelected.get();
+			if(s.isInitial()) {
+				s.setInitial(false);
+			}else if(! s.isInitial()) {
+				s.setInitial(true);
+			}
+		}
+	}
+	
+	/**
+	 * Cambia a estado final si no es final y viceversa
+	 */
+	public void changeToFinal() {
+		if(this.lastSelected.isPresent()) {
+			State s = this.lastSelected.get();
+			if(s.isFinal()) {
+				s.setFinal(false);
+			}else if(! s.isFinal()) {
+				s.setFinal(true);
+			}
+		}
 	}
 	
 }

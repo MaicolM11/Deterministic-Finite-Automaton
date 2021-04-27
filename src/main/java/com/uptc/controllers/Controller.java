@@ -7,6 +7,7 @@ public class Controller{
 	public Controller() {
 		WindowPrincipal principal = new WindowPrincipal();
 		MouseEvent.getInstance().setPanelInteractive(principal.getPanelInteractive());
+		OwnActionListener.getInstance().setPanelInteractive(principal.getPanelInteractive());
 		principal.setVisible(true);
 	}
 	

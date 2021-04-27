@@ -8,6 +8,7 @@ import com.uptc.views.PanelInteractive;
 import com.uptc.views.PanelMenu;
 
 import java.awt.event.MouseMotionListener;
+import java.util.Optional;
 
 public class MouseEvent implements MouseMotionListener, MouseListener {
 	
@@ -46,12 +47,16 @@ public class MouseEvent implements MouseMotionListener, MouseListener {
 				ManageAutomaton.getInstance().addState(e.getX(), e.getY());
 				this.panelInteractive.repaint();
 			}
-		}else if(button == 2) {//Click Derecho
-			
+		}else if(button == 3) {//Click Derecho
+			Optional<State> s = ManageAutomaton.getInstance().searchState(e.getPoint());
+			if(s.isPresent()) {				
+				this.panelInteractive.showPopMenu(e.getX(), e.getY());
+			}
 		}
 				
 	}
-
+	
+	
 	@Override
 	public void mousePressed(java.awt.event.MouseEvent e) {
 		
