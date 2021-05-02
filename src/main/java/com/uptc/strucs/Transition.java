@@ -16,4 +16,16 @@ public class Transition implements  Comparable<Transition> {
         return t2.terminalSymbol.compareTo(this.terminalSymbol);
     }
 
+    
+    public String getTerminalSymbol() {
+        return terminalSymbol;
+    }
+
+    public void setTerminalSymbol(String terminalSymbol) {
+        this.terminalSymbol = terminalSymbol;
+    }
+
+    public State getState(){
+        return state;
+    }
 }

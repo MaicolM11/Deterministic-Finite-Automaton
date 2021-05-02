@@ -16,6 +16,7 @@ public class MouseEvent implements MouseMotionListener, MouseListener {
 	private PanelInteractive panelInteractive;
 	private PanelMenu panelMenu;
 	private State circle_move;
+	private Optional<State> stateInit;
 	
 	public static MouseEvent getInstance() {
 		if(MY_INSTANCE == null) {
@@ -59,11 +60,22 @@ public class MouseEvent implements MouseMotionListener, MouseListener {
 	
 	@Override
 	public void mousePressed(java.awt.event.MouseEvent e) {
+		if (this.panelMenu.getLastOption() == Options.NEW_TRANSITION) {
+			stateInit= ManageAutomaton.getInstance().searchState(e.getPoint());
+		}
 		
 	}
 
 	@Override
 	public void mouseReleased(java.awt.event.MouseEvent e) {
+		if (this.panelMenu.getLastOption() == Options.NEW_TRANSITION) {
+			Optional<State> s = ManageAutomaton.getInstance().searchState(e.getPoint());
+			if (s.isPresent() && stateInit.isPresent()) {
+				ManageAutomaton.getInstance().addTransition(stateInit.get(), s.get(),this.panelInteractive.showBox());
+			}
+
+		}
+		this.panelInteractive.repaint();
 		
 	}
 
@@ -83,12 +95,14 @@ public class MouseEvent implements MouseMotionListener, MouseListener {
 	 */
 	@Override
 	public void mouseDragged(java.awt.event.MouseEvent e) {
-		if (circle_move == null) {
-            ManageAutomaton.getInstance().searchState(e.getPoint()).ifPresent(x -> circle_move = x);
-        } else {
-            circle_move.translate(e.getPoint().x - circle_move.x, e.getPoint().y - circle_move.y);
-        }
-         this.panelInteractive.repaint();
+		if (this.panelMenu.getLastOption() == Options.NEW_STATE) {
+			if (circle_move == null) {
+				ManageAutomaton.getInstance().searchState(e.getPoint()).ifPresent(x -> circle_move = x);
+			} else {
+				circle_move.translate(e.getPoint().x - circle_move.x, e.getPoint().y - circle_move.y);
+			}
+			this.panelInteractive.repaint();
+		  }
 	}
 
 	@Override

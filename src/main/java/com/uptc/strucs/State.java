@@ -108,5 +108,13 @@ public class State extends Coordenate {
 	public void setFinal(boolean isFinal) {
 		this.isFinal = isFinal;
 	}
+
+    public Set<Transition> getTransitions() {
+        return transitions;
+    }
+
+    public void setTransitions(Set<Transition> transitions) {
+        this.transitions = transitions;
+    }
 	
 }

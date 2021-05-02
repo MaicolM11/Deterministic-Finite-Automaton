@@ -6,9 +6,13 @@ import java.awt.Point;
 import java.awt.Polygon;
 import java.util.Iterator;
 import java.util.Optional;
+import java.awt.geom.QuadCurve2D;
+import java.awt.Graphics2D;
+import java.awt.BasicStroke; 
 
 import com.uptc.strucs.Automaton;
 import com.uptc.strucs.State;
+import com.uptc.strucs.Transition;
 
 /**
  * Se pintan los automatas
@@ -87,6 +91,41 @@ public class ManageAutomaton {
 			 drawState(g, it.next());
 		 }
 	}
+
+	public void addTransition(State a,State b, String symbol){
+		this.automaton.addTransition(a, b, symbol);
+	}
+
+	public void redrawTransition(Graphics g){
+		this.automaton.getGraph().forEach(x ->{
+			x.getTransitions().forEach(y->drawTransition(g, x, y));
+		});
+	}
+
+	public void drawTransition(Graphics g ,State a, Transition t){
+		int arrowSize=(int)((t.getState().getX()+a.getX())*0.02);
+		double pointCX =((t.getState().getX()+a.getX())/2);
+		double pointCY =((t.getState().getY()+a.getY())/2);
+			Graphics2D G2D = (Graphics2D)g; 
+			G2D.setColor(Color.black); 
+			G2D.setStroke(new BasicStroke(1.0f)); 
+			QuadCurve2D QC2D = new QuadCurve2D.Double(
+			 a.getX(),
+			 a.getY(), 
+			 pointCX, 
+			 pointCY,
+			 t.getState().getX(),
+			 t.getState().getY()); 
+			G2D.draw(QC2D); 
+        	/*g.drawLine(Integer.parseInt(""+Math.round(t.getState().getX()-RADIO/2)),Integer.parseInt(""+Math.round(t.getState().getY())) , Integer.parseInt(""+Math.round((t.getState().getX()-RADIO/2)-arrowSize)), Integer.parseInt(""+Math.round(t.getState().getY()-arrowSize)));
+			g.drawLine(Integer.parseInt(""+Math.round(t.getState().getX()-RADIO/2)),Integer.parseInt(""+Math.round(t.getState().getY())) , Integer.parseInt(""+Math.round((t.getState().getX()-arrowSize)-RADIO/2)), Integer.parseInt(""+Math.round(t.getState().getY()+arrowSize)));
+             */ 
+		}
+
+
+
+
+
 	
 	/**
 	 * Se dibuja un estado en pantalla

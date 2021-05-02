@@ -3,6 +3,7 @@ package com.uptc.views;
 import java.awt.Graphics;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 
@@ -29,6 +30,7 @@ public class PanelInteractive extends JPanel{
 	
 	public void paint(Graphics g){
 		super.paint(g);
+		ManageAutomaton.getInstance().redrawTransition(g);
 		ManageAutomaton.getInstance().redibujarEstados(g);
     }
 	
@@ -52,4 +54,7 @@ public class PanelInteractive extends JPanel{
 		this.popupMenu.show(this, x, y);
 	}
 	
+	public String showBox(){
+	return JOptionPane.showInputDialog(null,"Valor de la transición");
+	}
 }

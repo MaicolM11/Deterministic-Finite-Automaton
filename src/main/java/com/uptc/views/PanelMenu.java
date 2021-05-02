@@ -21,7 +21,7 @@ public class PanelMenu extends JPanel implements ActionListener {
 
     public PanelMenu() {
         jToolBar = new JToolBar();
-        jToolBar.setPreferredSize(new DimensionUIResource(800, 40));
+        jToolBar.setPreferredSize(new DimensionUIResource(830, 40));
         jToolBar.setFloatable(false);
         initButtons();
         this.add(jToolBar);
