@@ -13,12 +13,12 @@ public class Algorithm extends Automaton {
         NE, M, NM
     };
 
-    Algorithm() {
+    public Algorithm() {
         super();
         table = new ArrayList<>();
     }
 
-    void init() {
+    public void init() {
         table.clear();
         makeTable();
         checkDistinc(); // a isfinal != b
@@ -60,6 +60,8 @@ public class Algorithm extends Automaton {
             addTransitionsOutput(newState, pair.b);
             addTransitionsInput(newState, pair.a);
             addTransitionsInput(newState, pair.b);
+            newState.setInitial(pair.a.isInitial || pair.b.isInitial);
+            newState.setFinal(pair.a.isFinal);
             pair.a.isCombinated = true;
             pair.b.isCombinated = true;            
             deleteState(pair.a);

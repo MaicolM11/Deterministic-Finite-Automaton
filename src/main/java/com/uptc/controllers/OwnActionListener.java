@@ -32,19 +32,16 @@ public class OwnActionListener implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		switch (Options.valueOf(e.getActionCommand())) {
-		case INITIAL_STATE:
-			ManageAutomaton.getInstance().changeToInitial();
-			this.panelInteractive.repaint();
-			System.out.println("Como estado inicial");
-			break;
-		case FINAL_STATE:
-			ManageAutomaton.getInstance().changeToFinal();
-			this.panelInteractive.repaint();
-			System.out.println("Como estado final");
-			break;
-		default:
-			break;
+			case INITIAL_STATE:
+				ManageAutomaton.getInstance().changeToInitial();
+				break;
+			case FINAL_STATE:
+				ManageAutomaton.getInstance().changeToFinal();
+				break;
+			default:
+				break;
 		}
+		this.panelInteractive.repaint();
 	}
 
 }

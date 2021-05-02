@@ -1,4 +1,6 @@
 package com.uptc.views;
+import java.awt.BorderLayout;
+
 import javax.swing.JFrame;
 
 
@@ -12,8 +14,9 @@ public class WindowPrincipal extends JFrame{
         panelMenu=new PanelMenu();
         panelInteractive= new PanelInteractive();
 
-        this.getContentPane().add(panelMenu,new java.awt.BorderLayout().NORTH);
-        this.getContentPane().add(panelInteractive,new java.awt.BorderLayout().CENTER);
+        new java.awt.BorderLayout();
+		this.getContentPane().add(panelMenu,BorderLayout.NORTH);
+        this.getContentPane().add(panelInteractive,BorderLayout.CENTER);
         this.pack();
         this.setSize(900,600);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

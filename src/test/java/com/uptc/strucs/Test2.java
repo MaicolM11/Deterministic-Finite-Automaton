@@ -3,18 +3,20 @@ package com.uptc.strucs;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.awt.Point;
+
 
 public class Test2 {
     public static void main(String[] args) {
         Algorithm algorithm = new Algorithm();
-        State q0 = new State("q0", null);
-        State q1 = new State("q1", null);
-        State q2 = new State("q2", null);
-        State q3 = new State("q3", null);
-        State q4 = new State("q4", null);
-        State q5 = new State("q5", null);
-        State q6 = new State("q6", null);
-        State q7 = new State("q7", null);
+        State q0 = new State("q0", new Point());
+        State q1 = new State("q1", new Point());
+        State q2 = new State("q2", new Point());
+        State q3 = new State("q3", new Point());
+        State q4 = new State("q4", new Point());
+        State q5 = new State("q5", new Point());
+        State q6 = new State("q6", new Point());
+        State q7 = new State("q7", new Point());
         
         List<State> list = new ArrayList<>(Arrays.asList(q0,q1,q2,q3,q4,q5,q6,q7));
         list.forEach(algorithm::addState);

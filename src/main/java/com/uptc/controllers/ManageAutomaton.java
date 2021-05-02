@@ -4,197 +4,202 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Polygon;
-import java.util.Iterator;
-import java.util.Optional;
 import java.awt.geom.QuadCurve2D;
 import java.awt.Graphics2D;
-import java.awt.BasicStroke; 
+import java.awt.BasicStroke;
 
-import com.uptc.strucs.Automaton;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import com.uptc.strucs.Algorithm;
 import com.uptc.strucs.State;
 import com.uptc.strucs.Transition;
 
 /**
  * Se pintan los automatas
+ * 
  * @author santiago
  *
  */
-public class ManageAutomaton {
-	
-	private Automaton automaton;
-	private int cont;
+public class ManageAutomaton extends Algorithm {
+
 	public static int RADIO = 50;
-	private static  Color yellow = new Color(255,255,150);
+	private static Color yellow = new Color(255, 255, 150);
+	private int cont;
 	private static ManageAutomaton INSTANCE;
 	private Optional<State> lastSelected;
-	
+
 	private ManageAutomaton() {
-		this.automaton = new Automaton();
+		super();
 		this.cont = 0;
 	}
-	
+
 	public static ManageAutomaton getInstance() {
-		if(INSTANCE == null) {
+		if (INSTANCE == null) {
 			INSTANCE = new ManageAutomaton();
 		}
 		return INSTANCE;
 	}
-	
+
 	/**
-	 * Dibuja un estado y le asigna un nombre
-	 * @param graphics
+	 * Un nuevo estado es agregado a la lista
+	 * 
 	 * @param posx
 	 * @param posy
 	 */
-	public void drawState(Graphics graphics, int posx , int posy) {
-		graphics.setColor(Color.BLACK);
-		graphics.fillOval(posx ,posy ,RADIO , RADIO);
-		graphics.fillOval(posx, posy, RADIO, RADIO);
-		String stateName = "q" + cont;
-		graphics.drawString(stateName , posx + (RADIO /3), posy + (RADIO / 2));
-		this.automaton.addState(new State(stateName, new Point(posx, posy)));
+	public void addState(int posx, int posy) {
+		addState(new State("q" + cont, new Point(posx, posy)));
 		cont++;
-	}
-	
-	/**
-	 * @return the automaton
-	 */
-	public Automaton getAutomaton() {
-		return automaton;
 	}
 
 	/**
-	 * @param automaton the automaton to set
-	 */
-	public void setAutomaton(Automaton automaton) {
-		this.automaton = automaton;
-	}
-	
-	/**
-	 * Un nuevo estado es agregado a la lista
-	 * @param posx
-	 * @param posy
-	 */
-	public void addState(int posx , int posy) {
-		this.automaton.addState(new State("q" + cont , new Point(posx, posy)));
-		cont++;
-	}
-	
-	/**
-	 * Se recorre la lista de estados
-	 * y se redibuja
+	 * Se recorre la lista de estados y se redibuja
+	 * 
 	 * @param g
 	 */
 	public void redibujarEstados(Graphics g) {
-		Iterator<State> it = this.automaton.getGraph().iterator();
-		 while(it.hasNext()){
-			 drawState(g, it.next());
-		 }
+		Iterator<State> it = getGraph().iterator();
+		while (it.hasNext()) {
+			drawState(g, it.next());
+		}
 	}
 
-	public void addTransition(State a,State b, String symbol){
-		this.automaton.addTransition(a, b, symbol);
-	}
-
-	public void redrawTransition(Graphics g){
-		this.automaton.getGraph().forEach(x ->{
-			x.getTransitions().forEach(y->drawTransition(g, x, y));
+	public void redrawTransition(Graphics g) {
+		getGraph().forEach(x -> {
+			Map<State, Set<String>> values = x.getTransitions().stream()
+				.collect(Collectors.groupingBy(
+					Transition::getState, 
+					Collectors.mapping(Transition::getTerminalSymbol, Collectors.toSet())));
+			values.forEach((k, v) -> drawTransition(g, x, k, v.stream().collect(Collectors.joining(", "))));
 		});
 	}
 
-	public void drawTransition(Graphics g ,State a, Transition t){
-		int arrowSize=(int)((t.getState().getX()+a.getX())*0.02);
-		double pointCX =((t.getState().getX()+a.getX())/2);
-		double pointCY =((t.getState().getY()+a.getY())/2);
-			Graphics2D G2D = (Graphics2D)g; 
-			G2D.setColor(Color.black); 
-			G2D.setStroke(new BasicStroke(1.0f)); 
+	private void drawTransition(Graphics g, State a, State b, String t) {
+		
+		double centerx = (a.getX() + b.getX()) / 2.0;
+		double centery = (a.getY() + b.getY()) / 2.0;
+		double lengthx = b.x - a.x;
+		double lengthy = b.y - a.y;
+		double length = Math.sqrt(lengthx * lengthx + lengthy * lengthy);
+		double factorx = (length == 0.0) ? 0.0 : (lengthx / length);
+		double factory = (length == 0.0) ? 0.0 : (lengthy / length);
+		int pointCX = (int) (centerx + 30 * factory);
+		
+		int pointCY = (int) (centery - 30 * factorx);
+
+		Graphics2D G2D = (Graphics2D) g;
+		G2D.setColor(Color.black);
+		G2D.setStroke(new BasicStroke(1.0f));
+		
+		if(a.equals(b)){
+			Point i = new Point((int)(b.getX() - RADIO/ 2 + 5), (int)(b.getY()- RADIO / 2 + 10));
+			Point f = new Point((int)(b.getX() + RADIO/ 2 - 5), (int)(b.getY()- RADIO / 2 + 10));
 			QuadCurve2D QC2D = new QuadCurve2D.Double(
-			 a.getX(),
-			 a.getY(), 
-			 pointCX, 
-			 pointCY,
-			 t.getState().getX(),
-			 t.getState().getY()); 
-			G2D.draw(QC2D); 
-        	/*g.drawLine(Integer.parseInt(""+Math.round(t.getState().getX()-RADIO/2)),Integer.parseInt(""+Math.round(t.getState().getY())) , Integer.parseInt(""+Math.round((t.getState().getX()-RADIO/2)-arrowSize)), Integer.parseInt(""+Math.round(t.getState().getY()-arrowSize)));
-			g.drawLine(Integer.parseInt(""+Math.round(t.getState().getX()-RADIO/2)),Integer.parseInt(""+Math.round(t.getState().getY())) , Integer.parseInt(""+Math.round((t.getState().getX()-arrowSize)-RADIO/2)), Integer.parseInt(""+Math.round(t.getState().getY()+arrowSize)));
-             */ 
+						i.getX(), 
+						i.getY(), 
+						pointCX, 
+						a.getY() - 100, 
+						f.getX(), 
+						f.getY()
+						);
+
+			G2D.draw(QC2D);
+			g.drawString(t, pointCX, a.y - 60);
+			g.drawLine(f.x, f.y, f.x - 7, f.y -10);
+			g.drawLine(f.x, f.y, f.x + 3, f.y - 10);
+			return;
 		}
 
+		QuadCurve2D QC2D = new QuadCurve2D.Double(a.getX(), a.getY(), pointCX, pointCY, b.getX(), b.getY());
+		G2D.draw(QC2D);
+		paintArrow(g, b, pointCX, pointCY);
+		g.drawString(t, pointCX, pointCY);
+	}
 
 
 
+	private void paintArrow(Graphics g, State init, double pointCX, double pointCY) {
+		double angle = Math.atan2(pointCX - init.x, pointCY - init.y);
+		Point initP = new Point((int) (Math.sin(angle) * RADIO / 2) + init.x,
+				(int) (Math.cos(angle) * RADIO / 2) + init.y);
+		angle += Math.PI / 10;
+		int endX = (int) (Math.sin(angle) * 15) + initP.x;
+		int endY = (int) (Math.cos(angle) * 15) + initP.y;
+		g.drawLine(initP.x, initP.y, endX, endY);
+		angle -= 2.0 * Math.PI / 10;
+		endX = (int) (Math.sin(angle) * 15) + initP.x;
+		endY = (int) (Math.cos(angle) * 15) + initP.y;
+		g.drawLine(initP.x, initP.y, endX, endY);
+	}
 
-	
 	/**
 	 * Se dibuja un estado en pantalla
+	 * 
 	 * @param g
 	 * @param state
 	 */
-	public void drawState(Graphics g , State state) {
+	public void drawState(Graphics g, State state) {
 		g.setColor(yellow);
 		Point po = state.getPoint();
-		g.fillOval(po.x -(RADIO/2),po.y-(RADIO/2) ,RADIO , RADIO);
+		g.fillOval(po.x - (RADIO / 2), po.y - (RADIO / 2), RADIO, RADIO);
 		g.setColor(Color.BLACK);
-		g.drawOval(po.x-(RADIO/2), po.y-(RADIO/2), RADIO, RADIO);
-		g.drawString(state.getName() , state.getPoint().x , state.getPoint().y);
-		if(state.isInitial()) {
-			this.drawInitialState(g, state.getPoint().x , state.getPoint().y);
+		g.drawOval(po.x - (RADIO / 2), po.y - (RADIO / 2), RADIO, RADIO);
+		g.drawString(state.getName(), state.getPoint().x - 10, state.getPoint().y + 5);
+		if (state.isInitial()) {
+			this.drawInitialState(g, state.getPoint().x, state.getPoint().y);
 		}
-		if(state.isFinal()) {
-			this.drawFinalState(g, state.getPoint().x , state.getPoint().y);
+		if (state.isFinal()) {
+			this.drawFinalState(g, state.getPoint().x, state.getPoint().y);
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @param g
 	 * @param xInitial
 	 * @param yInitial
 	 */
-	private void drawInitialState(Graphics g , int xInitial, int yInitial) {
-		int xPoly[] = {xInitial - RADIO  , xInitial - RADIO / 2 , xInitial - RADIO };
-        int yPoly[] = {yInitial - RADIO / 2, yInitial, yInitial + RADIO / 2};
-        Polygon poly = new Polygon(xPoly, yPoly, xPoly.length);
-        g.drawPolygon(poly);
+	private void drawInitialState(Graphics g, int xInitial, int yInitial) {
+		int xPoly[] = { xInitial - RADIO, xInitial - RADIO / 2, xInitial - RADIO };
+		int yPoly[] = { yInitial - RADIO / 2, yInitial, yInitial + RADIO / 2 };
+		Polygon poly = new Polygon(xPoly, yPoly, xPoly.length);
+		g.drawPolygon(poly);
 	}
-	
+
 	private void drawFinalState(Graphics g, int xInitial, int yInitial) {
-		g.drawOval(xInitial - (RADIO / 2) + 5, yInitial - (RADIO / 2) + 5, RADIO - (RADIO / 5) , RADIO - (RADIO / 5) );
+		g.drawOval(xInitial - (RADIO / 2) + 5, yInitial - (RADIO / 2) + 5, RADIO - (RADIO / 5), RADIO - (RADIO / 5));
 	}
-	
-	public Optional<State> searchState(Point point){
-		this.lastSelected = this.automaton.searchState(point);
-		return this.lastSelected;
+
+	public Optional<State> searchState(Point point) {
+		this.lastSelected = super.searchState(point);
+		return super.searchState(point);
 	}
-	
+
 	/**
 	 * Si es inicial lo desmarca como inicial y viceversa
 	 */
 	public void changeToInitial() {
-		if(this.lastSelected.isPresent()) {
+		if (this.lastSelected.isPresent()) {
 			State s = this.lastSelected.get();
-			if(s.isInitial()) {
-				s.setInitial(false);
-			}else if(! s.isInitial()) {
-				s.setInitial(true);
-			}
+			s.setInitial(!s.isInitial());
 		}
 	}
-	
+
 	/**
 	 * Cambia a estado final si no es final y viceversa
 	 */
 	public void changeToFinal() {
-		if(this.lastSelected.isPresent()) {
+		if (this.lastSelected.isPresent()) {
 			State s = this.lastSelected.get();
-			if(s.isFinal()) {
-				s.setFinal(false);
-			}else if(! s.isFinal()) {
-				s.setFinal(true);
-			}
+			s.setFinal(!s.isFinal());
 		}
 	}
-	
+
+	public void deleteState(Point point) {
+		searchState(point).ifPresent(this::deleteState);
+	}
+
 }

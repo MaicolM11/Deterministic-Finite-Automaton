@@ -59,6 +59,13 @@ public class PanelMenu extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         lastOption=Options.valueOf(e.getActionCommand());
+        switch (lastOption){
+            case MINIMIZATE:
+                MouseEvent.getInstance().algorithm();             
+                break;
+            default:
+                break;
+        }
     }
 
 
