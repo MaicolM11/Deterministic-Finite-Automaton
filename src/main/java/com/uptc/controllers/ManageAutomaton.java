@@ -28,13 +28,11 @@ public class ManageAutomaton extends Algorithm {
 
 	public static int RADIO = 50;
 	private static Color yellow = new Color(255, 255, 150);
-	private int cont;
 	private static ManageAutomaton INSTANCE;
 	private Optional<State> lastSelected;
 
 	private ManageAutomaton() {
 		super();
-		this.cont = 0;
 	}
 
 	public static ManageAutomaton getInstance() {
@@ -51,8 +49,7 @@ public class ManageAutomaton extends Algorithm {
 	 * @param posy
 	 */
 	public void addState(int posx, int posy) {
-		addState(new State("q" + cont, new Point(posx, posy)));
-		cont++;
+		this.addState(new State("q" + this.graph.size(), new Point(posx, posy)));
 	}
 
 	/**

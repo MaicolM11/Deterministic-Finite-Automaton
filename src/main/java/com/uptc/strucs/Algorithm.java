@@ -7,7 +7,7 @@ import java.awt.Point;
 
 public class Algorithm extends Automaton {
     
-    private List<PairTable> table;
+    protected List<PairTable> table;
   
     enum Results {
         NE, M, NM
