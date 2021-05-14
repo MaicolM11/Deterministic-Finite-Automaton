@@ -6,13 +6,10 @@ import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.plaf.DimensionUIResource;
 import javax.swing.plaf.FontUIResource;
-
 import com.uptc.controllers.MouseEvent;
+import com.uptc.controllers.OwnActionListener;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-public class PanelMenu extends JPanel implements ActionListener {
+public class PanelMenu extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private String buttons[][];
@@ -48,26 +45,13 @@ public class PanelMenu extends JPanel implements ActionListener {
             button.setFont(font);
             button.setContentAreaFilled(false);
             button.setBorderPainted(false);
-            button.addActionListener(this);
+            button.addActionListener(OwnActionListener.getInstance());
             button.setActionCommand(b[2]);
             button.setIcon(new ImageIcon(getClass().getResource("/images" + b[1])));
             jToolBar.add(button);
 
         }
     }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        lastOption=Options.valueOf(e.getActionCommand());
-        switch (lastOption){
-            case MINIMIZATE:
-                MouseEvent.getInstance().algorithm();             
-                break;
-            default:
-                break;
-        }
-    }
-
 
     public Options getLastOption(){
         return lastOption;

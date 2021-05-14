@@ -30,7 +30,8 @@ public class ManageAutomaton extends Algorithm {
 	private static Color yellow = new Color(255, 255, 150);
 	private static ManageAutomaton INSTANCE;
 	private Optional<State> lastSelected;
-
+	private State currentStep;
+	
 	private ManageAutomaton() {
 		super();
 	}
@@ -139,6 +140,7 @@ public class ManageAutomaton extends Algorithm {
 	 * @param state
 	 */
 	public void drawState(Graphics g, State state) {
+		
 		g.setColor(yellow);
 		Point po = state.getPoint();
 		g.fillOval(po.x - (RADIO / 2), po.y - (RADIO / 2), RADIO, RADIO);
@@ -198,5 +200,24 @@ public class ManageAutomaton extends Algorithm {
 	public void deleteState(Point point) {
 		searchState(point).ifPresent(this::deleteState);
 	}
-
+	
+	/**
+	 * @param caracter
+	 * @return
+	 */
+	public boolean stepByState(String caracter) {
+		if(this.currentStep == null) {
+			Optional<State> firstState = this.getFirstState();
+			if(firstState.isPresent()) {
+				this.currentStep = this.getFirstState().get();
+			}
+		}else if(this.currentStep != null) {
+			this.currentStep = this.currentStep.getNextTransition(caracter);
+			if(this.currentStep.isFinal()) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 }
