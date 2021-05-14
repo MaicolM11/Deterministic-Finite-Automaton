@@ -18,6 +18,10 @@ public class State extends Coordenate {
     protected boolean isCombinated;
     protected State newState;
 
+    public State(){
+        super(0, 0);
+    }
+
     public State (String name, Point point) {
         super(point.x, point.y);
         this.name = name;

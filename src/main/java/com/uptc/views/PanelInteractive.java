@@ -20,8 +20,6 @@ public class PanelInteractive extends JPanel{
 	
 	public PanelInteractive(){
 		this.setVisible(true);
-		JLabel jLabel= new JLabel("PANEL INTERACTIVO");
-		this.add(jLabel);
         this.addMouseListener(MouseEvent.getInstance());
         this.addMouseMotionListener(MouseEvent.getInstance());
         this.createJpopMenu();

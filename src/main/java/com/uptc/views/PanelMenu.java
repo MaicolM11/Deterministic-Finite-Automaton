@@ -63,6 +63,9 @@ public class PanelMenu extends JPanel implements ActionListener {
             case MINIMIZATE:
                 MouseEvent.getInstance().algorithm();             
                 break;
+            case VALIDATE_WORD:
+                MouseEvent.getInstance().visibleTable();
+                break;
             default:
                 break;
         }

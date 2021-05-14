@@ -8,6 +8,7 @@ public class Controller{
 		WindowPrincipal principal = new WindowPrincipal();
 		MouseEvent.getInstance().setPanelInteractive(principal.getPanelInteractive());
 		OwnActionListener.getInstance().setPanelInteractive(principal.getPanelInteractive());
+		MouseEvent.getInstance().setTableWords(principal.getTableWords());
 		principal.setVisible(true);
 	}
 	

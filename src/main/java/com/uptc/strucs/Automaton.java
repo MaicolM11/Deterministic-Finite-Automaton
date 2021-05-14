@@ -62,4 +62,14 @@ public class Automaton {
         return result.stream().map(x-> x.terminalSymbol).distinct().collect(Collectors.toList());
     }
 
+    public State stateInit(){
+        State stateTemp=new State();
+        for (State state : graph) {
+            if(state.isInitial()){
+                stateTemp=state;
+            }
+        }
+        return stateTemp;
+    }
+
 }

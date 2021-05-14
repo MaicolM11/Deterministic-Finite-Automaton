@@ -7,8 +7,9 @@ import java.awt.Polygon;
 import java.awt.geom.QuadCurve2D;
 import java.awt.Graphics2D;
 import java.awt.BasicStroke;
-
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -202,4 +203,30 @@ public class ManageAutomaton extends Algorithm {
 		searchState(point).ifPresent(this::deleteState);
 	}
 
+	//-- 
+	public List<Boolean> validateWords(List<String> words){
+		List<Boolean> isValidate=new ArrayList<>();
+        for (int i = 0; i < words.size(); i++) {
+			if(words.get(i)!=null){
+		    isValidate.add(i, validateWord(words.get(i)));
+			}
+		}
+		return isValidate;
+	}
+//-- 
+	public Boolean validateWord(String word){
+		char[] temp=word.toCharArray();
+		State stateActual=super.stateInit();
+		for (int i = 0; i < temp.length; i++) {
+			String charac=""+temp[i];
+			Optional<Transition> trans=stateActual.getTransitions().stream().filter(x->x.getTerminalSymbol().equals(charac)).findFirst();
+			if(!trans.isEmpty()){
+				stateActual=trans.get().getState();
+			}
+			else {
+				return false;
+			}
+		}
+		return (stateActual.isFinal()?true:false);
+	}
 }
