@@ -55,6 +55,6 @@ public class PanelInteractive extends JPanel{
 	}
 	
 	public String showBox(){
-		return JOptionPane.showInputDialog(this,"Valor de la transición");
+	return JOptionPane.showInputDialog(null,"Valor de la transición");
 	}
 }

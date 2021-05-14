@@ -28,12 +28,13 @@ public class ManageAutomaton extends Algorithm {
 
 	public static int RADIO = 50;
 	private static Color yellow = new Color(255, 255, 150);
+	private int cont;
 	private static ManageAutomaton INSTANCE;
 	private Optional<State> lastSelected;
-	private State currentStep;
-	
+
 	private ManageAutomaton() {
 		super();
+		this.cont = 0;
 	}
 
 	public static ManageAutomaton getInstance() {
@@ -50,7 +51,8 @@ public class ManageAutomaton extends Algorithm {
 	 * @param posy
 	 */
 	public void addState(int posx, int posy) {
-		this.addState(new State("q" + this.graph.size(), new Point(posx, posy)));
+		addState(new State("q" + cont, new Point(posx, posy)));
+		cont++;
 	}
 
 	/**
@@ -140,7 +142,6 @@ public class ManageAutomaton extends Algorithm {
 	 * @param state
 	 */
 	public void drawState(Graphics g, State state) {
-		
 		g.setColor(yellow);
 		Point po = state.getPoint();
 		g.fillOval(po.x - (RADIO / 2), po.y - (RADIO / 2), RADIO, RADIO);
@@ -200,24 +201,5 @@ public class ManageAutomaton extends Algorithm {
 	public void deleteState(Point point) {
 		searchState(point).ifPresent(this::deleteState);
 	}
-	
-	/**
-	 * @param caracter
-	 * @return
-	 */
-	public boolean stepByState(String caracter) {
-		if(this.currentStep == null) {
-			Optional<State> firstState = this.getFirstState();
-			if(firstState.isPresent()) {
-				this.currentStep = this.getFirstState().get();
-			}
-		}else if(this.currentStep != null) {
-			this.currentStep = this.currentStep.getNextTransition(caracter);
-			if(this.currentStep.isFinal()) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
+
 }

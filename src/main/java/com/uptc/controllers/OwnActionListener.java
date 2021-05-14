@@ -38,12 +38,6 @@ public class OwnActionListener implements ActionListener{
 			case FINAL_STATE:
 				ManageAutomaton.getInstance().changeToFinal();
 				break;
-			case MINIMIZATE:
-				System.out.println("Minimizar");
-				break;
-			case VALIDATE_WORD:
-				System.out.println("Validar Palabra");
-				break;
 			default:
 				break;
 		}
