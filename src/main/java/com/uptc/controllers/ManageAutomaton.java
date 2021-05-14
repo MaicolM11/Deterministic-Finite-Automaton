@@ -1,6 +1,7 @@
 package com.uptc.controllers;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Polygon;
@@ -31,9 +32,11 @@ public class ManageAutomaton extends Algorithm {
 	private static ManageAutomaton INSTANCE;
 	private Optional<State> lastSelected;
 	private State currentStep;
-	
+	private String elementsStepByState = "";
+	private int step;
+
 	private ManageAutomaton() {
-		super();
+		this.step = -1;
 	}
 
 	public static ManageAutomaton getInstance() {
@@ -67,16 +70,14 @@ public class ManageAutomaton extends Algorithm {
 
 	public void redrawTransition(Graphics g) {
 		getGraph().forEach(x -> {
-			Map<State, Set<String>> values = x.getTransitions().stream()
-				.collect(Collectors.groupingBy(
-					Transition::getState, 
-					Collectors.mapping(Transition::getTerminalSymbol, Collectors.toSet())));
+			Map<State, Set<String>> values = x.getTransitions().stream().collect(Collectors.groupingBy(
+					Transition::getState, Collectors.mapping(Transition::getTerminalSymbol, Collectors.toSet())));
 			values.forEach((k, v) -> drawTransition(g, x, k, v.stream().collect(Collectors.joining(", "))));
 		});
 	}
 
 	private void drawTransition(Graphics g, State a, State b, String t) {
-		
+
 		double centerx = (a.getX() + b.getX()) / 2.0;
 		double centery = (a.getY() + b.getY()) / 2.0;
 		double lengthx = b.x - a.x;
@@ -85,28 +86,21 @@ public class ManageAutomaton extends Algorithm {
 		double factorx = (length == 0.0) ? 0.0 : (lengthx / length);
 		double factory = (length == 0.0) ? 0.0 : (lengthy / length);
 		int pointCX = (int) (centerx + 30 * factory);
-		
+
 		int pointCY = (int) (centery - 30 * factorx);
 
 		Graphics2D G2D = (Graphics2D) g;
 		G2D.setColor(Color.black);
 		G2D.setStroke(new BasicStroke(1.0f));
-		
-		if(a.equals(b)){
-			Point i = new Point((int)(b.getX() - RADIO/ 2 + 5), (int)(b.getY()- RADIO / 2 + 10));
-			Point f = new Point((int)(b.getX() + RADIO/ 2 - 5), (int)(b.getY()- RADIO / 2 + 10));
-			QuadCurve2D QC2D = new QuadCurve2D.Double(
-						i.getX(), 
-						i.getY(), 
-						pointCX, 
-						a.getY() - 100, 
-						f.getX(), 
-						f.getY()
-						);
+
+		if (a.equals(b)) {
+			Point i = new Point((int) (b.getX() - RADIO / 2 + 5), (int) (b.getY() - RADIO / 2 + 10));
+			Point f = new Point((int) (b.getX() + RADIO / 2 - 5), (int) (b.getY() - RADIO / 2 + 10));
+			QuadCurve2D QC2D = new QuadCurve2D.Double(i.getX(), i.getY(), pointCX, a.getY() - 100, f.getX(), f.getY());
 
 			G2D.draw(QC2D);
 			g.drawString(t, pointCX, a.y - 60);
-			g.drawLine(f.x, f.y, f.x - 7, f.y -10);
+			g.drawLine(f.x, f.y, f.x - 7, f.y - 10);
 			g.drawLine(f.x, f.y, f.x + 3, f.y - 10);
 			return;
 		}
@@ -116,8 +110,6 @@ public class ManageAutomaton extends Algorithm {
 		paintArrow(g, b, pointCX, pointCY);
 		g.drawString(t, pointCX, pointCY);
 	}
-
-
 
 	private void paintArrow(Graphics g, State init, double pointCX, double pointCY) {
 		double angle = Math.atan2(pointCX - init.x, pointCY - init.y);
@@ -140,7 +132,7 @@ public class ManageAutomaton extends Algorithm {
 	 * @param state
 	 */
 	public void drawState(Graphics g, State state) {
-		
+
 		g.setColor(yellow);
 		Point po = state.getPoint();
 		g.fillOval(po.x - (RADIO / 2), po.y - (RADIO / 2), RADIO, RADIO);
@@ -200,24 +192,96 @@ public class ManageAutomaton extends Algorithm {
 	public void deleteState(Point point) {
 		searchState(point).ifPresent(this::deleteState);
 	}
-	
+
 	/**
 	 * @param caracter
 	 * @return
 	 */
 	public boolean stepByState(String caracter) {
-		if(this.currentStep == null) {
+		if (this.currentStep == null) {
 			Optional<State> firstState = this.getFirstState();
-			if(firstState.isPresent()) {
+			if (firstState.isPresent()) {
 				this.currentStep = this.getFirstState().get();
 			}
-		}else if(this.currentStep != null) {
+		} else if (this.currentStep != null) {
 			this.currentStep = this.currentStep.getNextTransition(caracter);
-			if(this.currentStep.isFinal()) {
+			if (this.currentStep.isFinal()) {
 				return true;
 			}
 		}
 		return false;
 	}
+
+	public void paintElementsStepByState(Graphics g) {
+		g.setFont(new Font("Tahoma", Font.PLAIN, 30));
+		if(currentStep != null) {
+			if(!currentStep.isFinal()) {
+				this.drawCaracter(g);
+			}else if(currentStep.isFinal() && this.step == this.elementsStepByState.length()) {
+				g.setColor(Color.GREEN);
+				g.drawString(this.elementsStepByState, 0, 30);
+			}else {
+				this.drawCaracter(g);
+			}
+		}else if(this.step == -1) {
+			g.setColor(Color.BLACK);
+			g.drawString(this.elementsStepByState, 0, 30);
+		}else {
+			g.setColor(Color.RED);
+			g.drawString(this.elementsStepByState, 0, 30);
+		}
+		
+	}
 	
+	
+	/**
+	 * Se dibuja caracter a caracter para saber en que caracter
+	 * de la palabra ingresada se esta 
+	 * @param g
+	 */
+	private void drawCaracter(Graphics g) {
+		g.setColor(Color.BLACK);
+		int currentSpace = 0;
+		for (int i = 0; i < this.elementsStepByState.length(); i++) {
+			String currentCharacter = this.elementsStepByState.charAt(i) + "";
+			if (i == this.step) {
+				g.setColor(Color.LIGHT_GRAY);
+				g.drawString(currentCharacter, currentSpace, 30);
+				g.setColor(Color.BLACK);
+			} else {
+				g.drawString(currentCharacter, currentSpace, 30);
+			}
+			currentSpace += g.getFontMetrics().stringWidth(currentCharacter);
+		}
+	}
+
+	public String getElementsStepByState() {
+		return elementsStepByState;
+	}
+
+	public void setElementsStepByState(String elementsStepByState) {
+		if (elementsStepByState != null) {
+			this.elementsStepByState = elementsStepByState;
+		}
+	}
+	
+	public void setFirstSate() {
+		if(this.getFirstState().isPresent()) {
+			this.currentStep = this.getFirstState().get();
+		}
+	}
+	
+	public void addStep() {
+		this.step++;
+		if(currentStep != null) {
+			if(this.step < this.elementsStepByState.length()) {
+				currentStep = this.currentStep.getNextTransition(this.elementsStepByState.charAt(step)+"");
+			}
+		}
+	}
+
+	public void setStep(int step) {
+		this.step = step;
+	}
+
 }

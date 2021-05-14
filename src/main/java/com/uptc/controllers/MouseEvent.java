@@ -45,6 +45,7 @@ public class MouseEvent implements MouseMotionListener, MouseListener {
 	public void mouseClicked(java.awt.event.MouseEvent e) {
 		int button = e.getButton();
 		if(button == 1) {//Click Izquierdo
+			System.out.println("Click izquierdo " + this.panelMenu.getLastOption());
 			if(this.panelMenu.getLastOption() == Options.NEW_STATE) {//Si se pulso el boton nuevo estado
 				ManageAutomaton.getInstance().addState(e.getX(), e.getY());
 			} else if(panelMenu.getLastOption() == Options.DELETE_STATE) {

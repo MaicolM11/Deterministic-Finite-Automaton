@@ -51,9 +51,15 @@ public class PanelMenu extends JPanel {
             jToolBar.add(button);
 
         }
+        
     }
 
     public Options getLastOption(){
         return lastOption;
     }
+    
+    public void setLastOption(Options last) {
+    	this.lastOption = last;
+    }
+    
 }
