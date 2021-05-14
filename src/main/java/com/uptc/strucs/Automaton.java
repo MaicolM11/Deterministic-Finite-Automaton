@@ -61,22 +61,15 @@ public class Automaton {
         graph.stream().map(x-> x.transitions).forEach(result::addAll);
         return result.stream().map(x-> x.terminalSymbol).distinct().collect(Collectors.toList());
     }
-    
-    /**
-     * Se verifica que dentro de cada estado no hayan transiciones repetidas 
-     * @return
-     */
-    public boolean isDeterministic() {
-    	for (State current : this.graph) {
-			if( ! current.isDeterministic()) {
-				return false;
-			}
-		}
-    	return true;
+
+    public State stateInit(){
+        State stateTemp=new State();
+        for (State state : graph) {
+            if(state.isInitial()){
+                stateTemp=state;
+            }
+        }
+        return stateTemp;
     }
-    
-    public Optional<State> getFirstState() {
-    	return this.graph.stream().findFirst();
-	}
-    
+
 }

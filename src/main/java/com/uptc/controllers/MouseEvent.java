@@ -9,6 +9,7 @@ import com.uptc.views.Options;
 import com.uptc.strucs.State;
 import com.uptc.views.PanelInteractive;
 import com.uptc.views.PanelMenu;
+import com.uptc.views.TableWords;
 
 
 public class MouseEvent implements MouseMotionListener, MouseListener {
@@ -18,6 +19,7 @@ public class MouseEvent implements MouseMotionListener, MouseListener {
 	private PanelMenu panelMenu;
 	private State circle_move;
 	private Optional<State> stateInit;
+	private TableWords tableWords;
 	
 	public static MouseEvent getInstance() {
 		if(MY_INSTANCE == null) {
@@ -36,10 +38,19 @@ public class MouseEvent implements MouseMotionListener, MouseListener {
 	public void setPanelInteractive(PanelInteractive p) {
 		this.panelInteractive = p;
 	}
+
+	public void visibleTable(){
+		this.tableWords.showMe();
+	}
 	
 	public void setPanelMenu(PanelMenu panelMenu) {
 		this.panelMenu = panelMenu;
 	}
+
+	public void setTableWords(TableWords tableWords) {
+		this.tableWords= tableWords;
+	}
+	
 	
 	@Override
 	public void mouseClicked(java.awt.event.MouseEvent e) {

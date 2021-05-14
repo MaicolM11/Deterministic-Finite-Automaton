@@ -10,15 +10,19 @@ public class WindowPrincipal extends JFrame{
 	private PanelMenu panelMenu;
     private PanelInteractive panelInteractive;
     private PanelStepByState panelStepByState;
+	private TableWords tableWords;
     
     public WindowPrincipal(){
         panelMenu=new PanelMenu();
         panelInteractive= new PanelInteractive();
-        this.panelStepByState = new PanelStepByState();
+		tableWords= new TableWords();
+		this.panelStepByState = new PanelStepByState();
         new java.awt.BorderLayout();
 		this.getContentPane().add(panelMenu,BorderLayout.NORTH);
         this.getContentPane().add(panelInteractive,BorderLayout.CENTER);
-        this.getContentPane().add(this.panelStepByState,BorderLayout.SOUTH);
+		this.getContentPane().add(tableWords,BorderLayout.EAST);
+		this.getContentPane().add(this.panelStepByState,BorderLayout.SOUTH);
+		tableWords.hideMe();
         this.pack();
         this.setSize(900,600);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -32,6 +36,10 @@ public class WindowPrincipal extends JFrame{
 		return panelMenu;
 	}
 
+	
+    public TableWords getTableWords() {
+	    return tableWords;
+    }
 	/**
 	 * @return the panelInteractive
 	 */

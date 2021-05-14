@@ -20,8 +20,6 @@ public class PanelInteractive extends JPanel{
 	
 	public PanelInteractive(){
 		this.setVisible(true);
-		JLabel jLabel= new JLabel("PANEL INTERACTIVO");
-		this.add(jLabel);
         this.addMouseListener(MouseEvent.getInstance());
         this.addMouseMotionListener(MouseEvent.getInstance());
         this.createJpopMenu();
@@ -55,6 +53,6 @@ public class PanelInteractive extends JPanel{
 	}
 	
 	public String showBox(){
-		return JOptionPane.showInputDialog(this,"Valor de la transición");
+	return JOptionPane.showInputDialog(null,"Valor de la transición");
 	}
 }

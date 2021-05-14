@@ -8,8 +8,9 @@ import java.awt.Polygon;
 import java.awt.geom.QuadCurve2D;
 import java.awt.Graphics2D;
 import java.awt.BasicStroke;
-
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -29,6 +30,7 @@ public class ManageAutomaton extends Algorithm {
 
 	public static int RADIO = 50;
 	private static Color yellow = new Color(255, 255, 150);
+	private int cont;
 	private static ManageAutomaton INSTANCE;
 	private Optional<State> lastSelected;
 	private State currentStep;
@@ -36,6 +38,8 @@ public class ManageAutomaton extends Algorithm {
 	private int step;
 
 	private ManageAutomaton() {
+		super();
+		this.cont = 0;
 		this.step = -1;
 	}
 
@@ -53,7 +57,8 @@ public class ManageAutomaton extends Algorithm {
 	 * @param posy
 	 */
 	public void addState(int posx, int posy) {
-		this.addState(new State("q" + this.graph.size(), new Point(posx, posy)));
+		addState(new State("q" + cont, new Point(posx, posy)));
+		cont++;
 	}
 
 	/**
@@ -132,7 +137,6 @@ public class ManageAutomaton extends Algorithm {
 	 * @param state
 	 */
 	public void drawState(Graphics g, State state) {
-
 		g.setColor(yellow);
 		Point po = state.getPoint();
 		g.fillOval(po.x - (RADIO / 2), po.y - (RADIO / 2), RADIO, RADIO);
@@ -209,7 +213,33 @@ public class ManageAutomaton extends Algorithm {
 				return true;
 			}
 		}
-		return false;
+	}
+
+	//-- 
+	public List<Boolean> validateWords(List<String> words){
+		List<Boolean> isValidate=new ArrayList<>();
+        for (int i = 0; i < words.size(); i++) {
+			if(words.get(i)!=null){
+		    isValidate.add(i, validateWord(words.get(i)));
+			}
+		}
+		return isValidate;
+	}
+//-- 
+	public Boolean validateWord(String word){
+		char[] temp=word.toCharArray();
+		State stateActual=super.stateInit();
+		for (int i = 0; i < temp.length; i++) {
+			String charac=""+temp[i];
+			Optional<Transition> trans=stateActual.getTransitions().stream().filter(x->x.getTerminalSymbol().equals(charac)).findFirst();
+			if(!trans.isEmpty()){
+				stateActual=trans.get().getState();
+			}
+			else {
+				return false;
+			}
+		}
+		return (stateActual.isFinal()?true:false);
 	}
 
 	public void paintElementsStepByState(Graphics g) {

@@ -10,6 +10,7 @@ public class Controller{
 		OwnActionListener.getInstance().setPanelInteractive(principal.getPanelInteractive());
 		OwnActionListener.getInstance().setPanelMenu(principal.getPanelMenu());
 		OwnActionListener.getInstance().setPanelStepByState(principal.getPanelStepByState());
+		MouseEvent.getInstance().setTableWords(principal.getTableWords());
 		principal.setVisible(true);
 	}
 	
