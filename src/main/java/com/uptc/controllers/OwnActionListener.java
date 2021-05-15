@@ -55,9 +55,10 @@ public class OwnActionListener implements ActionListener{
 				break;
 			case MINIMIZATE:
 				this.panelMenu.setLastOption(Options.MINIMIZATE);
+				MouseEvent.getInstance().algorithm();
 				break;
-			case VALIDATE_WORD:
-				this.panelMenu.setLastOption(Options.VALIDATE_WORD);
+			case STEP_BY_STATE:
+				this.panelMenu.setLastOption(Options.STEP_BY_STATE);
 				ManageAutomaton.getInstance().setStep(-1);
 				ManageAutomaton.getInstance().setFirstSate();
 				ManageAutomaton.getInstance().setElementsStepByState(JOptionPane.showInputDialog(null,"Palabra"));
@@ -65,20 +66,33 @@ public class OwnActionListener implements ActionListener{
 				break;
 			case NEW_STATE:
 				this.panelMenu.setLastOption(Options.NEW_STATE);
+				ManageAutomaton.getInstance().setCurrentStep(null);
+				this.panelInteractive.repaint();
 				break;
 			case NEW_TRANSITION:
 				this.panelMenu.setLastOption(Options.NEW_TRANSITION);
+				ManageAutomaton.getInstance().setCurrentStep(null);
+				this.panelInteractive.repaint();
 				break;
 			case DELETE_STATE:
 				this.panelMenu.setLastOption(Options.DELETE_STATE);
+				ManageAutomaton.getInstance().setCurrentStep(null);
+				this.panelInteractive.repaint();
 				break;
 			case DELETE_TRANSITION:
 				this.panelMenu.setLastOption(Options.DELETE_TRANSITION);
+				ManageAutomaton.getInstance().setCurrentStep(null);
+				this.panelInteractive.repaint();
 				break;
 			case STEP:
 				ManageAutomaton.getInstance().addStep();
 				this.panelStepByState.repaint();
+				this.panelInteractive.repaint();
 				break;
+			case VALIDATE_WORD:
+				MouseEvent.getInstance().visibleTable();
+				break;
+				
 			default:
 				break;
 		}

@@ -1,12 +1,10 @@
 package com.uptc.views;
 
 import java.awt.Graphics;
-import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
-
 import com.uptc.controllers.ManageAutomaton;
 import com.uptc.controllers.MouseEvent;
 import com.uptc.controllers.OwnActionListener;

@@ -1,8 +1,7 @@
 package com.uptc.views;
+
 import java.awt.BorderLayout;
-
 import javax.swing.JFrame;
-
 
 public class WindowPrincipal extends JFrame{
 
@@ -24,9 +23,10 @@ public class WindowPrincipal extends JFrame{
 		this.getContentPane().add(this.panelStepByState,BorderLayout.SOUTH);
 		tableWords.hideMe();
         this.pack();
-        this.setSize(900,600);
+        this.setSize(1300,600);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setLocationRelativeTo(null);    
+        this.setLocationRelativeTo(null);
+        this.setFocusable(true);
     }
 
 	/**

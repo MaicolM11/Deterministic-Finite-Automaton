@@ -71,5 +71,18 @@ public class Automaton {
         }
         return stateTemp;
     }
-
+    
+    /**
+     * Devuelve el estado que este marcado como inicial
+     * @return
+     */
+    public State getFirstState() {
+    	for (State current : this.graph) {
+    		 if(current.isInitial) {
+    			 return current;
+    		 }
+    	}
+    	return null;
+    }
+    
 }

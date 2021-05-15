@@ -20,6 +20,8 @@ public class State extends Coordenate {
 
     public State(){
         super(0, 0);
+        this.isFinal = false;
+        this.isInitial = false;
     }
 
     public State (String name, Point point) {
@@ -120,5 +122,19 @@ public class State extends Coordenate {
     public void setTransitions(Set<Transition> transitions) {
         this.transitions = transitions;
     }
-	
+	/**
+	 * Siguiente transicion a un simbolo dado
+	 * @param symbol
+	 * @return
+	 */
+    public State getNextTransition(String symbol) {
+    	for (Transition current : this.transitions) {
+    		System.out.println("Comparando acutual: " + current.terminalSymbol + " Symbol: " + symbol);
+    		if(current.terminalSymbol.compareTo(symbol) == 0) {
+    			return current.state;
+    		}
+    	}
+    	return null;
+    }
+    
 }

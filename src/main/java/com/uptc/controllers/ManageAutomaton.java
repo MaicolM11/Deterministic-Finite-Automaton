@@ -30,7 +30,6 @@ public class ManageAutomaton extends Algorithm {
 
 	public static int RADIO = 50;
 	private static Color yellow = new Color(255, 255, 150);
-	private int cont;
 	private static ManageAutomaton INSTANCE;
 	private Optional<State> lastSelected;
 	private State currentStep;
@@ -39,7 +38,6 @@ public class ManageAutomaton extends Algorithm {
 
 	private ManageAutomaton() {
 		super();
-		this.cont = 0;
 		this.step = -1;
 	}
 
@@ -57,8 +55,7 @@ public class ManageAutomaton extends Algorithm {
 	 * @param posy
 	 */
 	public void addState(int posx, int posy) {
-		addState(new State("q" + cont, new Point(posx, posy)));
-		cont++;
+		addState(new State("q" + this.graph.size(), new Point(posx, posy)));
 	}
 
 	/**
@@ -138,6 +135,12 @@ public class ManageAutomaton extends Algorithm {
 	 */
 	public void drawState(Graphics g, State state) {
 		g.setColor(yellow);
+		if(this.currentStep != null) {
+			if(state.equals(this.currentStep)) {
+				g.setColor(Color.DARK_GRAY);
+				System.out.println("Griss");
+			}
+		}
 		Point po = state.getPoint();
 		g.fillOval(po.x - (RADIO / 2), po.y - (RADIO / 2), RADIO, RADIO);
 		g.setColor(Color.BLACK);
@@ -197,23 +200,7 @@ public class ManageAutomaton extends Algorithm {
 		searchState(point).ifPresent(this::deleteState);
 	}
 
-	/**
-	 * @param caracter
-	 * @return
-	 */
-	public boolean stepByState(String caracter) {
-		if (this.currentStep == null) {
-			Optional<State> firstState = this.getFirstState();
-			if (firstState.isPresent()) {
-				this.currentStep = this.getFirstState().get();
-			}
-		} else if (this.currentStep != null) {
-			this.currentStep = this.currentStep.getNextTransition(caracter);
-			if (this.currentStep.isFinal()) {
-				return true;
-			}
-		}
-	}
+	
 
 	//-- 
 	public List<Boolean> validateWords(List<String> words){
@@ -241,21 +228,22 @@ public class ManageAutomaton extends Algorithm {
 		}
 		return (stateActual.isFinal()?true:false);
 	}
-
+	/**
+	 * 
+	 * @param g
+	 */
 	public void paintElementsStepByState(Graphics g) {
 		g.setFont(new Font("Tahoma", Font.PLAIN, 30));
-		if(currentStep != null) {
-			if(!currentStep.isFinal()) {
-				this.drawCaracter(g);
-			}else if(currentStep.isFinal() && this.step == this.elementsStepByState.length()) {
-				g.setColor(Color.GREEN);
-				g.drawString(this.elementsStepByState, 0, 30);
-			}else {
-				this.drawCaracter(g);
-			}
-		}else if(this.step == -1) {
+		if(this.step == -1) {
 			g.setColor(Color.BLACK);
 			g.drawString(this.elementsStepByState, 0, 30);
+		} else if(currentStep != null) {
+			if(currentStep.isFinal() && this.step == (this.elementsStepByState.length() - 1)) {
+				g.setColor(Color.GREEN);
+				g.drawString(this.elementsStepByState, 0, 30);
+			}else if(this.step < (this.elementsStepByState.length() - 1)) {
+				this.drawCaracter(g);
+			}
 		}else {
 			g.setColor(Color.RED);
 			g.drawString(this.elementsStepByState, 0, 30);
@@ -284,6 +272,14 @@ public class ManageAutomaton extends Algorithm {
 			currentSpace += g.getFontMetrics().stringWidth(currentCharacter);
 		}
 	}
+	
+	public State getCurrentStep() {
+		return currentStep;
+	}
+
+	public void setCurrentStep(State currentStep) {
+		this.currentStep = currentStep;
+	}
 
 	public String getElementsStepByState() {
 		return elementsStepByState;
@@ -296,8 +292,9 @@ public class ManageAutomaton extends Algorithm {
 	}
 	
 	public void setFirstSate() {
-		if(this.getFirstState().isPresent()) {
-			this.currentStep = this.getFirstState().get();
+		State first = this.getFirstState();
+		if(first != null) {
+			this.currentStep = first;
 		}
 	}
 	
@@ -306,6 +303,7 @@ public class ManageAutomaton extends Algorithm {
 		if(currentStep != null) {
 			if(this.step < this.elementsStepByState.length()) {
 				currentStep = this.currentStep.getNextTransition(this.elementsStepByState.charAt(step)+"");
+				System.out.println(currentStep);
 			}
 		}
 	}
